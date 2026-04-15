@@ -70,8 +70,19 @@ export default function DashboardGalleryPage() {
 
   const uploadImage = useCallback(
     async (file: File) => {
-      if (!userId || !file.type.startsWith("image/")) {
-        setMessage({ type: "error", text: "Please select a valid image file" });
+      if (!userId) return;
+
+      // File type validation
+      const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        setMessage({ type: "error", text: "Invalid file type. Please upload JPG, PNG, GIF, or WebP" });
+        return;
+      }
+
+      // File size validation (10MB limit)
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
+      if (file.size > MAX_FILE_SIZE) {
+        setMessage({ type: "error", text: "File too large. Maximum size is 10MB" });
         return;
       }
 

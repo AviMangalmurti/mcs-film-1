@@ -91,7 +91,21 @@ export default function PortfolioPage() {
 
   const processImageUpload = useCallback(
     async (itemId: string, file: File) => {
-      if (!userId || !file.type.startsWith("image/")) return;
+      if (!userId) return;
+
+      // File type validation
+      const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        setMessage({ type: "error", text: "Invalid file type. Please upload JPG, PNG, GIF, or WebP" });
+        return;
+      }
+
+      // File size validation (10MB limit)
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
+      if (file.size > MAX_FILE_SIZE) {
+        setMessage({ type: "error", text: "File too large. Maximum size is 10MB" });
+        return;
+      }
 
       setUploadingIds((prev) => new Set(prev).add(itemId));
 
