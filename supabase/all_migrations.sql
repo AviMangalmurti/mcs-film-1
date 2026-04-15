@@ -21,6 +21,10 @@ create table public.portfolio_items (
   media_type text not null check (media_type in ('image', 'video')),
   media_url text default '',       -- for uploaded images (Supabase Storage URL)
   video_embed_url text default '',  -- for YouTube/Vimeo embed URLs
+  category text default '',
+  section_id uuid references public.profile_sections on delete set null,
+  grid_size text default 'medium',
+  show_info text default 'hover',
   sort_order integer default 0,
   created_at timestamptz default now()
 );

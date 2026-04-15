@@ -85,7 +85,11 @@ export default function PortfolioPage() {
   };
 
   const removeItem = async (id: string) => {
-    await supabase.from("portfolio_items").delete().eq("id", id);
+    const { error } = await supabase.from("portfolio_items").delete().eq("id", id);
+    if (error) {
+      setMessage({ type: "error", text: error.message });
+      return;
+    }
     setItems(items.filter((item) => item.id !== id));
   };
 
@@ -154,9 +158,19 @@ export default function PortfolioPage() {
     (e: React.DragEvent) => {
       e.preventDefault();
       setDragOverId("new");
+      
+      // File validation for quick drop
+      const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
+      
       const files = Array.from(e.dataTransfer.files).filter((f) =>
-        f.type.startsWith("image/")
+        ALLOWED_TYPES.includes(f.type) && f.size <= MAX_FILE_SIZE
       );
+      
+      if (e.dataTransfer.files.length > files.length) {
+        setMessage({ type: "error", text: "Some files were skipped (invalid type or too large)" });
+        setTimeout(() => setMessage({ type: "", text: "" }), 3000);
+      }
       files.forEach((file) => {
         const id = crypto.randomUUID();
         const newItem: PortfolioItem = {
