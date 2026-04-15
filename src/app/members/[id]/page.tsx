@@ -4,7 +4,7 @@ import SectionRenderer from "@/components/SectionRenderer";
 import PortfolioGrid from "@/components/PortfolioGrid";
 import ViewTracker from "@/components/ViewTracker";
 import ReportButton from "@/components/ReportButton";
-import { User, Globe, ArrowLeft } from "lucide-react";
+import { User, Globe, ArrowLeft, Download } from "lucide-react";
 import Link from "next/link";
 import type { ProfileSection, PortfolioItem } from "@/lib/types";
 
@@ -156,6 +156,14 @@ export default async function MemberProfilePage({
                 <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
                   {profile.display_name || "Unnamed Member"}
                 </h1>
+                <Link
+                  href={`/members/${id}/export`}
+                  className="inline-flex items-center gap-2 rounded-lg bg-surface px-3 py-2 text-xs font-medium text-muted transition-all hover:bg-accent/10 hover:text-accent"
+                  title="Export for Gallery Book"
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Export
+                </Link>
                 <ReportButton contentType="profile" contentId={id} />
               </div>
               {profile.bio && (

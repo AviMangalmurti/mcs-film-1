@@ -74,6 +74,7 @@ export default function Navbar() {
         {/* Desktop nav */}
         <div className="hidden items-center gap-1 sm:flex">
           <NavLink href="/members">Members</NavLink>
+          <NavLink href="/gallery">Gallery</NavLink>
           <NavLink href="/chapters">Chapters</NavLink>
           {user ? (
             <>
@@ -134,6 +135,9 @@ export default function Navbar() {
             <div className="space-y-1 px-6 py-4">
               <MobileNavLink href="/members" onClick={() => setMenuOpen(false)}>
                 Members
+              </MobileNavLink>
+              <MobileNavLink href="/gallery" onClick={() => setMenuOpen(false)}>
+                Gallery
               </MobileNavLink>
               <MobileNavLink href="/chapters" onClick={() => setMenuOpen(false)}>
                 Chapters
